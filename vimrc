@@ -1,8 +1,12 @@
 set nocompatible
 set encoding=utf-8
 set termguicolors
+set background=dark
+let mapleader = ","
 syntax enable
 filetype plugin indent on
+
+" COMPLEMENTOS
 
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -11,12 +15,14 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
 Plug 'justinmk/vim-sneak'
 Plug 'airblade/vim-gitgutter'
-Plug 'catppuccin/vim', {'as': 'catppuccin'}   " tema oficial con todos los grupos de color
-Plug 'liuchengxu/vim-which-key'               " al pulsar la coma muestra un menú con todos tus atajos
-Plug 'mhinz/vim-startify'                     " pantalla de inicio con archivos recientes
-Plug 'jiangmiao/auto-pairs'                   " autocierre de paréntesis que sí "salta" el cierre
-Plug 'mbbill/undotree'                        " historial visual de cambios (:UndotreeToggle)
+Plug 'catppuccin/vim', {'as': 'catppuccin'}
+Plug 'liuchengxu/vim-which-key'
+Plug 'mhinz/vim-startify'
+Plug 'jiangmiao/auto-pairs'
+Plug 'mbbill/undotree'
 call plug#end()
+
+" OPCIONES GENERALES
 
 set number
 set norelativenumber
@@ -54,14 +60,37 @@ autocmd FileType * setlocal formatoptions-=cro
 
 set list
 set listchars=tab:▸\ ,trail:·,extends:›,precedes:‹
-
+set listchars+=leadmultispace:▏\ \ \
 set foldmethod=indent
 set foldlevel=99
 set foldenable
+set colorcolumn=100
+set noshowmode
+set fillchars=vert:│,eob:\ 
+set belloff=all
+set pumheight=12
+set lazyredraw
+set keymodel=startsel,stopsel
+set selectmode=
 
 if has('clipboard')
     set clipboard=unnamedplus
 endif
+
+if has('mouse_sgr')
+    set ttymouse=sgr
+endif
+
+if !has('gui_running')
+    execute "set <S-Up>=\e[1;2A"
+    execute "set <S-Down>=\e[1;2B"
+    execute "set <S-Right>=\e[1;2C"
+    execute "set <S-Left>=\e[1;2D"
+    execute "set <S-Home>=\e[1;2H"
+    execute "set <S-End>=\e[1;2F"
+endif
+
+" PERSISTENCIA Y ARCHIVOS UNDO
 
 if !isdirectory($HOME . '/.vim/undo')
     call mkdir($HOME . '/.vim/undo', 'p')
@@ -69,51 +98,66 @@ endif
 set undofile
 set undodir=~/.vim/undo
 
-set background=dark
+" COLORES E INTERFAZ
 
-highlight Normal       guifg=#CDD6F4 guibg=#1E1E2E
-highlight NonText      guifg=#45475A
-highlight EndOfBuffer  guifg=#45475A
+highlight Normal        guifg=#CDD6F4 guibg=#1E1E2E
+highlight NonText       guifg=#45475A
+highlight EndOfBuffer   guifg=#45475A
 highlight LineNr       guifg=#6C7086
-highlight CursorLine   guibg=#292A3D
-highlight CursorLineNr guifg=#CBA6F7 gui=bold
-highlight Visual       guibg=#45475A
-highlight Search       guifg=#1E1E2E guibg=#F9E2AF
-highlight IncSearch    guifg=#1E1E2E guibg=#FAB387 gui=bold
-highlight Cursor       guifg=#1E1E2E guibg=#F5E0DC
-highlight MatchParen   guifg=#F9E2AF guibg=#45475A gui=bold
+highlight CursorLine    guibg=#292A3D
+highlight CursorLineNr  guifg=#CBA6F7 gui=bold
+highlight Visual        guibg=#45475A
+highlight Search        guifg=#1E1E2E guibg=#F9E2AF
+highlight IncSearch     guifg=#1E1E2E guibg=#FAB387 gui=bold
+highlight Cursor        guifg=#1E1E2E guibg=#F5E0DC
+highlight MatchParen    guifg=#F9E2AF guibg=#45475A gui=bold
 
-highlight Comment      guifg=#7F849C gui=italic
-highlight String       guifg=#A6E3A1
-highlight Constant     guifg=#FAB387
-highlight Number       guifg=#FAB387
-highlight Boolean      guifg=#FAB387
-highlight Identifier   guifg=#89B4FA
-highlight Function     guifg=#89B4FA gui=bold
-highlight Statement    guifg=#CBA6F7
-highlight Conditional  guifg=#CBA6F7
-highlight Repeat       guifg=#CBA6F7
-highlight Operator     guifg=#89DCEB
-highlight PreProc      guifg=#F5C2E7
-highlight Type         guifg=#F9E2AF
-highlight Special      guifg=#F2CDCD
-highlight Todo         guifg=#1E1E2E guibg=#F9E2AF gui=bold
+highlight Comment       guifg=#7F849C gui=italic
+highlight String        guifg=#A6E3A1
+highlight Constant      guifg=#FAB387
+highlight Number        guifg=#FAB387
+highlight Boolean       guifg=#FAB387
+highlight Identifier    guifg=#89B4FA
+highlight Function      guifg=#89B4FA gui=bold
+highlight Statement     guifg=#CBA6F7
+highlight Conditional   guifg=#CBA6F7
+highlight Repeat        guifg=#CBA6F7
+highlight Operator      guifg=#89DCEB
+highlight PreProc       guifg=#F5C2E7
+highlight Type          guifg=#F9E2AF
+highlight Special       guifg=#F2CDCD
+highlight Todo          guifg=#1E1E2E guibg=#F9E2AF gui=bold
 
-highlight Error        guifg=#F38BA8 gui=bold
-highlight WarningMsg   guifg=#FAB387 gui=bold
-highlight ErrorMsg     guifg=#F38BA8 guibg=#1E1E2E gui=bold
+highlight Error         guifg=#F38BA8 gui=bold
+highlight WarningMsg    guifg=#FAB387 gui=bold
+highlight ErrorMsg      guifg=#F38BA8 guibg=#1E1E2E gui=bold
 
-highlight VertSplit    guifg=#45475A guibg=#1E1E2E
-highlight WinSeparator guifg=#45475A guibg=#1E1E2E
-highlight StatusLine   guifg=#CDD6F4 guibg=#313244 gui=NONE
-highlight StatusLineNC guifg=#7F849C guibg=#181825 gui=NONE
-highlight User1        guifg=#1E1E2E guibg=#CBA6F7 gui=bold
-highlight User2        guifg=#1E1E2E guibg=#89B4FA gui=bold
+highlight VertSplit     guifg=#45475A guibg=#1E1E2E
+highlight WinSeparator  guifg=#45475A guibg=#1E1E2E
+highlight StatusLine    guifg=#CDD6F4 guibg=#313244 gui=NONE
+highlight StatusLineNC  guifg=#7F849C guibg=#181825 gui=NONE
+highlight User1         guifg=#1E1E2E guibg=#CBA6F7 gui=bold
+highlight User2         guifg=#1E1E2E guibg=#89B4FA gui=bold
 
-highlight Directory    guifg=#89B4FA gui=bold
-highlight netrwDir     guifg=#89B4FA gui=bold
+highlight Directory     guifg=#89B4FA gui=bold
+highlight netrwDir      guifg=#89B4FA gui=bold
 highlight netrwClassify guifg=#CBA6F7
-highlight netrwPlain   guifg=#CDD6F4
+highlight netrwPlain    guifg=#CDD6F4
+
+highlight MiScrollTrack guifg=#45475A guibg=#1E1E2E
+highlight MiScrollThumb guifg=#CBA6F7 guibg=#1E1E2E
+highlight MiTabSel      guifg=#1E1E2E guibg=#CBA6F7 gui=bold
+highlight MiTabFill     guifg=#7F849C guibg=#181825 gui=NONE
+highlight MiTabFondo    guifg=#181825 guibg=#181825 gui=NONE
+highlight Whitespace    guifg=#313244
+highlight SpecialKey    guifg=#313244
+highlight ColorColumn   guibg=#262637
+highlight Pmenu         guifg=#CDD6F4 guibg=#313244
+highlight PmenuSel      guifg=#1E1E2E guibg=#CBA6F7 gui=bold
+highlight PmenuSbar     guibg=#45475A
+highlight PmenuThumb    guibg=#CBA6F7
+
+" EXPLORADOR NETRW
 
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
@@ -126,6 +170,8 @@ augroup MiNetrwBorrar
     autocmd!
     autocmd FileType netrw nmap <buffer> <leader>r D
 augroup END
+
+" BARRA DE ESTADO
 
 function! MiModo()
     let l:modo = mode()
@@ -158,7 +204,7 @@ set statusline+=\ Línea:%l/%L
 set statusline+=\ Col:%c
 set statusline+=\ %p%%\
 
-let mapleader = ","
+" ATAJOS GENERALES Y NAVEGACIÓN
 
 nnoremap <leader>e :Lexplore<CR>
 nnoremap <leader>q :close<CR>
@@ -175,9 +221,10 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-nnoremap <leader>b :ls<CR>:buffer<Space>
 nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>x :bdelete<CR>
 
 vnoremap < <gv
 vnoremap > >gv
@@ -195,7 +242,34 @@ inoremap ( ()<Left>
 inoremap [ []<Left>
 inoremap { {}<Left>
 
-autocmd BufWritePre * if &filetype !=# 'markdown' | %s/\s\+$//e | endif
+" atajos de edición estilo editor convencional
+
+vnoremap <C-c> y
+vnoremap <C-x> d
+inoremap <C-v> <C-r><C-o>"
+cnoremap <C-v> <C-r>"
+nnoremap <C-z> u
+inoremap <C-z> <C-o>u
+vnoremap <C-z> <Esc>u
+nnoremap <C-y> <C-r>
+inoremap <expr> <C-y> pumvisible() ? "\<C-y>" : "\<C-o>\<C-r>"
+nnoremap <C-a> ggVG
+inoremap <C-a> <Esc>ggVG
+vnoremap <C-a> <Esc>ggVG
+nnoremap <leader>+ <C-a>
+nnoremap <leader>- <C-x>
+nnoremap <leader>v <C-v>
+
+" Selección con Shift y flechas
+
+inoremap <S-Up>    <C-o>v<Up>
+inoremap <S-Down>  <C-o>v<Down>
+inoremap <S-Left>  <C-o>v<Left>
+inoremap <S-Right> <C-o>v<Right>
+inoremap <S-Home>  <C-o>v<Home>
+inoremap <S-End>   <C-o>v<End>
+
+" CREACIÓN, APERTURA Y GUARDADO DE ARCHIVOS
 
 let g:mi_plantillas = {
     \ 'py':  ['def main():', '    print("Hola, mundo")', '', '', 'if __name__ == "__main__":', '    main()'],
@@ -248,9 +322,6 @@ function! MiBuscarArchivo()
     endif
 endfunction
 
-nnoremap <leader>f :call MiBuscarArchivo()<CR>
-nnoremap <leader>n :call MiNuevoArchivo()<CR>
-
 function! MiGuardar()
     if expand('%') ==# ''
         let l:ruta = input('Guardar como: ', '', 'file')
@@ -263,9 +334,17 @@ function! MiGuardar()
     endif
 endfunction
 
+nnoremap <leader>f :call MiBuscarArchivo()<CR>
+nnoremap <leader>n :call MiNuevoArchivo()<CR>
 nnoremap <leader>w :call MiGuardar()<CR>
 nnoremap <C-s> :call MiGuardar()<CR>
 inoremap <C-s> <Esc>:call MiGuardar()<CR>
+
+" Elimina espacios al final de línea al guardar, excepto en Markdown
+
+autocmd BufWritePre * if &filetype !=# 'markdown' | %s/\s\+$//e | endif
+
+" EJECUCIÓN DE CÓDIGO Y TERMINAL
 
 let g:mi_runners = {
     \ 'python':     'python3 %s',
@@ -339,6 +418,8 @@ nnoremap <F6> :call MiCerrarResultado()<CR>
 tnoremap <F6> <C-\><C-n>:call MiCerrarResultado()<CR>
 tnoremap <Esc> <C-\><C-n>
 
+" BÚSQUEDA EN EL PROYECTO Y QUICKFIX
+
 function! MiBuscarProyecto()
     let l:texto = input('Buscar en el proyecto: ')
     if empty(l:texto)
@@ -355,11 +436,15 @@ function! MiBuscarProyecto()
     endif
 endfunction
 
-nnoremap <leader>/ :call MiBuscarProyecto()<CR>
-nnoremap ]q :cnext<CR>
-nnoremap [q :cprevious<CR>
+nnoremap <leader>/ :Rg<CR>
 nnoremap <leader>o :copen<CR>
 nnoremap <leader>c :cclose<CR>
+nnoremap ]q :cnext<CR>
+nnoremap [q :cprevious<CR>
+nnoremap <C-p> :Files<CR>
+nnoremap <C-t> :Rg<CR>
+
+" DASHBOARD Y COMANDO DE INFORMACIÓN
 
 function! MiDashboard()
     setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted
@@ -401,16 +486,10 @@ command! MiEditorInfo
     \ echo 'Vim: ' . v:version
     \ | echo 'Configuracion: ' . $MYVIMRC
     \ | echo 'Archivo: ' . expand('%:p')
-    \ | echo 'Tipo de archivo: ' . &filetyp
+    \ | echo 'Tipo de archivo: ' . &filetype
 
+" BARRA DE DESPLAZAMIENTO PERSONALIZADA
 
-
-if has('mouse_sgr')
-    set ttymouse=sgr
-endif
-
-highlight MiScrollTrack guifg=#45475A guibg=#1E1E2E
-highlight MiScrollThumb guifg=#CBA6F7 guibg=#1E1E2E
 
 if has('popupwin') && has('textprop')
     if empty(prop_type_get('MiThumbProp'))
@@ -455,7 +534,6 @@ function! MiScrollbarActualizar(...)
         endif
     endfor
 
-    " Posicion: ultima columna de la ventana actual
     let l:sp = win_screenpos(0)
     let l:opts = {
                 \ 'line': l:sp[0],
@@ -480,7 +558,6 @@ function! MiScrollbarActualizar(...)
     endif
 endfunction
 
-" Saltar a la linea que corresponde a la posicion del mouse
 function! MiScrollbarIr()
     if g:mi_sb_popup < 0 || empty(popup_getpos(g:mi_sb_popup))
         return
@@ -496,7 +573,6 @@ function! MiScrollbarIr()
     redraw
 endfunction
 
-" Captura clic
 function! MiScrollbarFiltro(winid, key)
     if a:key ==# "\<LeftMouse>"
         if getmousepos().winid == a:winid
@@ -520,28 +596,18 @@ augroup MiScrollbar
                 \ call MiScrollbarActualizar()
 augroup END
 
-" ,s muestra u oculta la barra
 function! MiScrollbarToggle()
     let g:mi_sb_activo = !g:mi_sb_activo
     call MiScrollbarActualizar()
 endfunction
+
 nnoremap <leader>s :call MiScrollbarToggle()<CR>
 
-nnoremap <C-p> :Files<CR>
-nnoremap <C-t> :Rg<CR>
-nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>/ :Rg<CR>
+" COC, SNEAK Y GITGUTTER
 
-" --- sneak ---
 let g:sneak#label = 1
-
-" --- gitgutter ---
-set signcolumn=yes
-
-" --- coc: extensiones que se instalan solas ---
 let g:coc_global_extensions = ['coc-pyright', 'coc-clangd', 'coc-tsserver', 'coc-sh', 'coc-json']
 
-" Tab confirma la sugerencia del autocompletado
 function! MiCheckBackSpace() abort
     let l:col = col('.') - 1
     return !l:col || getline('.')[l:col - 1] =~# '\s'
@@ -552,18 +618,14 @@ inoremap <silent><expr> <Tab>
             \ MiCheckBackSpace() ? "\<Tab>" :
             \ coc#refresh()
 
-" Navegar por el codigo
 nmap <silent> <leader>gd <Plug>(coc-definition)
 nmap <silent> <leader>gr <Plug>(coc-references)
 nmap <silent> <leader>gi <Plug>(coc-implementation)
 nmap <silent> K :call CocActionAsync('doHover')<CR>
-
-" Renombrar variable en todo el archivo
 nmap <leader>rn <Plug>(coc-rename)
 
-highlight MiTabSel   guifg=#1E1E2E guibg=#CBA6F7 gui=bold
-highlight MiTabFill  guifg=#7F849C guibg=#181825 gui=NONE
-highlight MiTabFondo guifg=#181825 guibg=#181825 gui=NONE
+" LÍNEA DE BUFFERS PERSONALIZADA
+
 
 function! MiTabClick(minwid, clicks, button, modifiers)
     execute 'buffer ' . a:minwid
@@ -590,122 +652,8 @@ endfunction
 set showtabline=2
 set tabline=%!MiTabline()
 
-" ,x cierra el buffer actual sin cerrar la ventana
-nnoremap <leader>x :bdelete<CR>
+" Cursor distinto según el modo
 
-" --- Cursor distinto según el modo (barra en insertar, subrayado en reemplazar) ---
 let &t_SI = "\e[6 q"
 let &t_SR = "\e[4 q"
 let &t_EI = "\e[2 q"
-
-" --- Guías de indentación ---
-set listchars+=leadmultispace:▏\ \ \
-highlight Whitespace guifg=#313244
-highlight SpecialKey guifg=#313244
-
-" --- Línea guía a los 100 caracteres ---
-set colorcolumn=100
-highlight ColorColumn guibg=#262637
-
-" --- Menú emergente de autocompletado con tu paleta ---
-highlight Pmenu      guifg=#CDD6F4 guibg=#313244
-highlight PmenuSel   guifg=#1E1E2E guibg=#CBA6F7 gui=bold
-highlight PmenuSbar  guibg=#45475A
-highlight PmenuThumb guibg=#CBA6F7
-
-" --- Limpieza visual ---
-set noshowmode                      " la barra de estado ya muestra el modo
-set fillchars=vert:│,eob:\          " quita los ~ del final y mejora los separadores
-set belloff=all                     " sin pitidos
-set pumheight=12
-set lazyredraw
-" ----------------------------------------------------------
-" 16. ATAJOS ESTILO EDITOR NORMAL (Ctrl+C / Z / A / X / V / Y)
-" ----------------------------------------------------------
-
-" Ctrl+C: copiar la seleccion (modo visual)
-vnoremap <C-c> y
-
-" Ctrl+X: cortar la seleccion (modo visual)
-vnoremap <C-x> d
-
-" Ctrl+V: pegar en modo insertar y en la linea de comandos
-inoremap <C-v> <C-r><C-o>"
-cnoremap <C-v> <C-r>"
-
-" Ctrl+Z: deshacer (en vez de suspender Vim)
-nnoremap <C-z> u
-inoremap <C-z> <C-o>u
-vnoremap <C-z> <Esc>u
-
-" Ctrl+Y: rehacer (si hay menu de autocompletado, conserva su funcion)
-nnoremap <C-y> <C-r>
-inoremap <expr> <C-y> pumvisible() ? "\<C-y>" : "\<C-o>\<C-r>"
-
-" Ctrl+A: seleccionar todo el archivo
-nnoremap <C-a> ggVG
-inoremap <C-a> <Esc>ggVG
-vnoremap <C-a> <Esc>ggVG
-
-" Funciones originales desplazadas
-nnoremap <leader>+ <C-a>
-nnoremap <leader>- <C-x>
-nnoremap <leader>v <C-v>
-" ----------------------------------------------------------
-" 16. ATAJOS ESTILO EDITOR NORMAL (Ctrl+C / Z / A / X / V / Y)
-" ----------------------------------------------------------
-
-" Ctrl+C: copiar la seleccion (modo visual)
-vnoremap <C-c> y
-
-" Ctrl+X: cortar la seleccion (modo visual)
-vnoremap <C-x> d
-
-" Ctrl+V: pegar en modo insertar y en la linea de comandos
-inoremap <C-v> <C-r><C-o>"
-cnoremap <C-v> <C-r>"
-
-" Ctrl+Z: deshacer (en vez de suspender Vim)
-nnoremap <C-z> u
-inoremap <C-z> <C-o>u
-vnoremap <C-z> <Esc>u
-
-" Ctrl+Y: rehacer (si hay menu de autocompletado, conserva su funcion)
-nnoremap <C-y> <C-r>
-inoremap <expr> <C-y> pumvisible() ? "\<C-y>" : "\<C-o>\<C-r>"
-
-" Ctrl+A: seleccionar todo el archivo
-nnoremap <C-a> ggVG
-inoremap <C-a> <Esc>ggVG
-vnoremap <C-a> <Esc>ggVG
-
-" Funciones originales desplazadas
-nnoremap <leader>+ <C-a>
-nnoremap <leader>- <C-x>
-nnoremap <leader>v <C-v>
-
-" ----------------------------------------------------------
-" 17. SELECCIONAR CON SHIFT + FLECHAS
-" ----------------------------------------------------------
-
-" Shift + flecha inicia la seleccion; una flecha sin Shift la termina
-set keymodel=startsel,stopsel
-set selectmode=
-
-" Codigos de teclas Shift+flecha para terminales tipo xterm
-if !has('gui_running')
-    execute "set <S-Up>=\e[1;2A"
-    execute "set <S-Down>=\e[1;2B"
-    execute "set <S-Right>=\e[1;2C"
-    execute "set <S-Left>=\e[1;2D"
-    execute "set <S-Home>=\e[1;2H"
-    execute "set <S-End>=\e[1;2F"
-endif
-
-" Que funcione tambien en modo insertar
-inoremap <S-Up>    <C-o>v<Up>
-inoremap <S-Down>  <C-o>v<Down>
-inoremap <S-Left>  <C-o>v<Left>
-inoremap <S-Right> <C-o>v<Right>
-inoremap <S-Home>  <C-o>v<Home>
-inoremap <S-End>   <C-o>v<End>
