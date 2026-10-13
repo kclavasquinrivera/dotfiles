@@ -675,9 +675,3 @@ It combines configuration management, plugin integration, terminal automation, k
 The main objective is to improve usability while preserving the flexibility and efficiency that make Vim valuable as a development tool.
 
 ---
-
-**Author:** [Your Name](https://github.com/YOUR_USERNAME)
-
-**Environment:** Vim · Ubuntu · WSL · Vimscript
-
-**License:** Add a license file if you intend to distribute the project publicly.
